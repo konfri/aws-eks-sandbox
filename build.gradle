@@ -1,0 +1,58 @@
+plugins {
+	id 'org.springframework.boot' version '2.3.0.RELEASE' apply false
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+subprojects {
+
+	group = 'com.example.hackathon'
+
+	apply plugin: 'java'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java-library'
+
+	sourceCompatibility = JavaVersion.VERSION_11
+
+	compileJava.options.encoding = "UTF-8"
+	compileTestJava.options.encoding = "UTF-8"
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.0.RELEASE")
+		}
+		dependencies {
+
+		}
+	}
+	dependencies {
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.projectlombok:lombok'
+		runtime('net.logstash.logback:logstash-logback-encoder:6.1')
+		implementation 'org.springframework.boot:spring-boot-starter'
+		testImplementation('org.springframework.boot:spring-boot-starter-test') {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		}
+
+		testCompile group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+		testCompile group: 'org.assertj', name: 'assertj-core', version: '3.16.1'
+	}
+
+	test {
+		useJUnitPlatform()
+		testLogging {
+			//events 'PASSED', 'FAILED', 'SKIPPED'
+			exceptionFormat = 'full'
+		}
+	}
+}
