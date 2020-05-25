@@ -1,5 +1,6 @@
 plugins {
     id 'org.springframework.boot'
+    id 'org.openapi.generator' version '4.3.1'
 }
 
 configurations {
@@ -41,3 +42,18 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+// For Maven see:
+// https://reflectoring.io/spring-boot-openapi/
+// https://github.com/thombergs/code-examples/tree/master/spring-boot/spring-boot-openapi
+
+openApiGenerate {
+    generatorName = "spring"
+    inputSpec = "$projectDir/src/main/resources/api.yaml"
+    outputDir = "$buildDir/generated/api"
+    apiPackage = "com.example.demo.api"
+    invokerPackage = "com.example.demo.invoker"
+    modelPackage = "com.example.demo.model"
+}
+
+compileJava.dependsOn tasks.openApiGenerate
