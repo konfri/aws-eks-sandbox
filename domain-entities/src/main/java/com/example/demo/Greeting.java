@@ -1,4 +1,4 @@
-package com;
+package com.example.demo;
 
 import lombok.Builder;
 import lombok.NonNull;
